@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Weather from "./Weather";
+import Data from "./Data";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
+
+const Title = styled.h1`
+  font-family: "Dancing Script", cursive;
+  color: #28527a;
+`;
 
 function App() {
+  const url =
+    "https://api.weatherbit.io/v2.0/current?city=Helsinki&key=5e42a57042f7468c823d12c2911a7534";
+
+  const [data, setData] = useState(null);
+
+  const fetchData = async () => {
+    const data = await axios.get(url);
+
+    setData(data.data.data[0]);
+    console.log(data.data.data[0]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Title>WEATHER LIVE</Title>
+
+      <Weather data={data} />
+      <Data data={data} />
     </div>
   );
 }
